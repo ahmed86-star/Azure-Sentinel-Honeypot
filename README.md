@@ -1,22 +1,30 @@
 # Azure-Sentinel-Honeypot
 Setup Azure Sentinel and a honeypot to observe live RDP brute force attacks and plot attacker geolocation
 
+
+
 ![image](https://github.com/ahmed86-star/Azure-Sentinel-Honeypot/assets/113064932/1564a35b-a4a4-4858-a21d-c17dac3c2864)
 
 
 # Azure Sentinel Honeypot
 
 This project demonstrates how to set up Azure Sentinel to monitor a honeypot virtual machine for live RDP brute force attacks, retrieve the attackers' geolocation information using a custom PowerShell script, and plot the data on the Azure Sentinel Map.
+![image](https://github.com/ahmed86-star/Azure-Sentinel-Honeypot/assets/113064932/1f55c804-adb8-4eda-9126-0b3181dafd5a)
 
 This project sets up a honeypot to attract and log RDP brute force attacks, uses Azure Sentinel for monitoring, and plots the attackers' geolocation on a map.
+
+SecurityEvent (Windows Event Logs)
+Syslog (Linux Event Logs)
+SecurityAlert (Log Analytics Alerts Triggered)
+SecurityIncident (Incidents created by Sentinel)
+AzureNetworkAnalytics_CL (Malicious Flows allowed into our honeynet)
 
 ## Prerequisites
 
 - Azure subscription free https://azure.microsoft.com/en-us/free
 - Basic understanding of Azure Sentinel and PowerShell
-- Virtual Machine to act as a honeypot (windows 10)
+- Virtual Machine to act as a honeypot (windows . Linux )
 
-## Setup Guide
 
 ### Setting up the Honeypot VM
 
@@ -52,6 +60,7 @@ function Get-Geolocation {
 
 # Retrieve RDP login failure events
 $rdpLogs = Get-WinEvent -LogName 'Security' | Where-Object { $_.Id -eq 4625 }
+![image](https://github.com/ahmed86-star/Azure-Sentinel-Honeypot/assets/113064932/9c3ec227-764e-4dff-b576-aa9801ee343e)
 
 # Loop through each log entry and get geolocation data
 foreach ($log in $rdpLogs) {
@@ -59,8 +68,8 @@ foreach ($log in $rdpLogs) {
     $location = Get-Geolocation -ip $ip
     Write-Output "IP: $ip, Location: $($location.city), $($location.country_name)"
 }
-
-
+![image](https://github.com/ahmed86-star/Azure-Sentinel-Honeypot/assets/113064932/6d0583ae-0092-43de-8286-343b72e2059c)
+ ![image](https://github.com/ahmed86-star/Azure-Sentinel-Honeypot/assets/113064932/2e423409-f1e2-465a-a372-438a9f0e850a)
 
 3. Deploy the script to your honeypot VM.
 
